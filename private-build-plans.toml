@@ -1,5 +1,5 @@
-[buildPlans.pragmasevka]
-family = "Pragmasevka"
+[buildPlans.PragmataPro]
+family = "PragmataPro"
 spacing = "term"
 serifs = "sans"
 noCvSs = true
@@ -7,16 +7,16 @@ exportGlyphNames = true
 
 hintParams = ["-a", "qqq"]
 
-    [buildPlans.pragmasevka.widths.normal]
+    [buildPlans.PragmataPro.widths.normal]
     shape = 500
     menu  = 5
     css   = "normal"
 
-    [buildPlans.pragmasevka.metricOverride]
+    [buildPlans.PragmataPro.metricOverride]
     leading = 1100
     xHeight = 550
 
-    [buildPlans.pragmasevka.ligations]
+    [buildPlans.PragmataPro.ligations]
     inherits="default-calt"
     enables = [
         "eqslasheq",
@@ -27,29 +27,29 @@ hintParams = ["-a", "qqq"]
     ]
     disables = ["slash-asterisk"]
 
-    [buildPlans.pragmasevka.variants]
+    [buildPlans.PragmataPro.variants]
     inherits = "ss08"
 
-    [buildPlans.pragmasevka.weights.regular]
+    [buildPlans.PragmataPro.weights.regular]
     shape = 425
     menu = 400
     css = 400
 
-    [buildPlans.pragmasevka.weights.semibold]
+    [buildPlans.PragmataPro.weights.semibold]
     shape = 600
     menu = 600
     css = 600
     
-    [buildPlans.pragmasevka.weights.bold]
+    [buildPlans.PragmataPro.weights.bold]
     shape = 800
     menu = 700
     css = 700
 
-    [buildPlans.pragmasevka.weights.black]
+    [buildPlans.PragmataPro.weights.black]
     shape = 900
     menu = 900
     css = 900
 
-    [buildPlans.pragmasevka.slopes]
+    [buildPlans.PragmataPro.slopes]
     upright = "default.Upright"
     italic = "default.Italic"

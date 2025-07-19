@@ -17,53 +17,53 @@ font: ## Run all build steps in correct order
 	make --ignore-errors nerd
 	make --ignore-errors package
 
-ttf: ## Build ttf font from `Pragmasevka` custom configuration
+ttf: ## Build ttf font from `PragmataPro` custom configuration
 	docker run --rm \
-		-v pragmasevka-volume:/builder/dist/pragmasevka/TTF \
+		-v PragmataPro-volume:/builder/dist/PragmataPro/TTF \
 		-v $(CURDIR)/private-build-plans.toml:/builder/private-build-plans.toml \
 		iosevka/builder \
-		npm run build -- ttf::pragmasevka
+		npm run build -- ttf::PragmataPro
 	docker run --rm \
-		-v pragmasevka-volume:/scripter \
+		-v PragmataPro-volume:/scripter \
 		-v $(CURDIR)/punctuation.py:/scripter/punctuation.py \
 		fontforge/scripter \
-		python /scripter/punctuation.py ./pragmasevka
+		python /scripter/punctuation.py ./PragmataPro
 	docker container create \
-		-v pragmasevka-volume:/ttf \
-		--name pragmasevka-dummy \
+		-v PragmataPro-volume:/ttf \
+		--name PragmataPro-dummy \
 		alpine
 	mkdir -p $(CURDIR)/dist/ttf
-	docker cp pragmasevka-dummy:/ttf $(CURDIR)/dist
-	docker rm pragmasevka-dummy
-	docker volume rm pragmasevka-volume
+	docker cp PragmataPro-dummy:/ttf $(CURDIR)/dist
+	docker rm PragmataPro-dummy
+	docker volume rm PragmataPro-volume
 	rm -rf $(CURDIR)/dist/ttf/*semibold*.ttf
 	rm -rf $(CURDIR)/dist/ttf/*black*.ttf
 	rm -rf $(CURDIR)/dist/ttf/punctuation.py
-	mv "$(CURDIR)/dist/ttf/pragmasevka-normalbolditalic.ttf" "$(CURDIR)/dist/ttf/pragmasevka-bolditalic.ttf"
-	mv "$(CURDIR)/dist/ttf/pragmasevka-normalboldupright.ttf" "$(CURDIR)/dist/ttf/pragmasevka-bold.ttf"
-	mv "$(CURDIR)/dist/ttf/pragmasevka-normalregularitalic.ttf" "$(CURDIR)/dist/ttf/pragmasevka-italic.ttf"
-	mv "$(CURDIR)/dist/ttf/pragmasevka-normalregularupright.ttf" "$(CURDIR)/dist/ttf/pragmasevka-regular.ttf"
+	mv "$(CURDIR)/dist/ttf/PragmataPro-normalbolditalic.ttf" "$(CURDIR)/dist/ttf/PragmataPro-bolditalic.ttf"
+	mv "$(CURDIR)/dist/ttf/PragmataPro-normalboldupright.ttf" "$(CURDIR)/dist/ttf/PragmataPro-bold.ttf"
+	mv "$(CURDIR)/dist/ttf/PragmataPro-normalregularitalic.ttf" "$(CURDIR)/dist/ttf/PragmataPro-italic.ttf"
+	mv "$(CURDIR)/dist/ttf/PragmataPro-normalregularupright.ttf" "$(CURDIR)/dist/ttf/PragmataPro-regular.ttf"
 
 nerd: ## Patch with Nerd Fonts glyphs
 	docker run --rm \
 		-v $(CURDIR)/dist/ttf:/in \
-		-v pragmasevka-volume:/out \
-		nerdfonts/patcher --complete --careful
+		-v PragmataPro-volume:/out \
+		nerdfonts/patcher --complete --careful --mono
 	docker container create \
-		-v pragmasevka-volume:/nerd \
-		--name pragmasevka-dummy \
+		-v PragmataPro-volume:/nerd \
+		--name PragmataPro-dummy \
 		alpine
-	docker cp pragmasevka-dummy:/nerd $(CURDIR)/dist
-	docker rm pragmasevka-dummy
-	docker volume rm pragmasevka-volume
-	mv "$(CURDIR)/dist/nerd/PragmasevkaNerdFont-Regular.ttf" "$(CURDIR)/dist/nerd/pragmasevka-nf-regular.ttf"
-	mv "$(CURDIR)/dist/nerd/PragmasevkaNerdFont-Italic.ttf" "$(CURDIR)/dist/nerd/pragmasevka-nf-italic.ttf"
-	mv "$(CURDIR)/dist/nerd/PragmasevkaNerdFont-Bold.ttf" "$(CURDIR)/dist/nerd/pragmasevka-nf-bold.ttf"
-	mv "$(CURDIR)/dist/nerd/PragmasevkaNerdFont-BoldItalic.ttf" "$(CURDIR)/dist/nerd/pragmasevka-nf-bolditalic.ttf"
+	docker cp PragmataPro-dummy:/nerd $(CURDIR)/dist
+	docker rm PragmataPro-dummy
+	docker volume rm PragmataPro-volume
+	mv "$(CURDIR)/dist/nerd/PragmataProNerdFontMono-Regular.ttf" "$(CURDIR)/dist/nerd/PragmataPro-nf-regular.ttf"
+	mv "$(CURDIR)/dist/nerd/PragmataProNerdFontMono-Italic.ttf" "$(CURDIR)/dist/nerd/PragmataPro-nf-italic.ttf"
+	mv "$(CURDIR)/dist/nerd/PragmataProNerdFontMono-Bold.ttf" "$(CURDIR)/dist/nerd/PragmataPro-nf-bold.ttf"
+	mv "$(CURDIR)/dist/nerd/PragmataProNerdFontMono-BoldItalic.ttf" "$(CURDIR)/dist/nerd/PragmataPro-nf-bolditalic.ttf"
 
 package: ## Pack fonts to ready-to-distribute archives
-	zip -jr $(CURDIR)/dist/Pragmasevka.zip $(CURDIR)/dist/ttf/*.ttf
-	zip -jr $(CURDIR)/dist/Pragmasevka_NF.zip $(CURDIR)/dist/nerd/*.ttf
+	zip -jr $(CURDIR)/dist/PragmataPro.zip $(CURDIR)/dist/ttf/*.ttf
+	zip -jr $(CURDIR)/dist/PragmataPro_NF.zip $(CURDIR)/dist/nerd/*.ttf
 
 clean:
 	rm -rf $(CURDIR)/dist/*
