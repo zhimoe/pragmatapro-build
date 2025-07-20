@@ -14,56 +14,56 @@ scripter: ## Create the `fontforge` scripter Docker image
 
 font: ## Run all build steps in correct order
 	make --ignore-errors ttf
-	make --ignore-errors nerd
-	make --ignore-errors package
+	# make --ignore-errors nerd
+	# make --ignore-errors package
 
-ttf: ## Build ttf font from `PragmataPro` custom configuration
+ttf: ## Build ttf font from `Iosevka` custom configuration
 	docker run --rm \
-		-v PragmataPro-volume:/builder/dist/PragmataPro/TTF \
+		-v Iosevka-volume:/builder/dist/Iosevka/TTF \
 		-v $(CURDIR)/private-build-plans.toml:/builder/private-build-plans.toml \
 		iosevka/builder \
-		npm run build -- ttf::PragmataPro
+		npm run build -- ttf::Iosevka
 	docker run --rm \
-		-v PragmataPro-volume:/scripter \
+		-v Iosevka-volume:/scripter \
 		-v $(CURDIR)/punctuation.py:/scripter/punctuation.py \
 		fontforge/scripter \
-		python /scripter/punctuation.py ./PragmataPro
+		python /scripter/punctuation.py ./Iosevka
 	docker container create \
-		-v PragmataPro-volume:/ttf \
-		--name PragmataPro-dummy \
+		-v Iosevka-volume:/ttf \
+		--name Iosevka-dummy \
 		alpine
 	mkdir -p $(CURDIR)/dist/ttf
-	docker cp PragmataPro-dummy:/ttf $(CURDIR)/dist
-	docker rm PragmataPro-dummy
-	docker volume rm PragmataPro-volume
+	docker cp Iosevka-dummy:/ttf $(CURDIR)/dist
+	docker rm Iosevka-dummy
+	docker volume rm Iosevka-volume
 	rm -rf $(CURDIR)/dist/ttf/*semibold*.ttf
 	rm -rf $(CURDIR)/dist/ttf/*black*.ttf
 	rm -rf $(CURDIR)/dist/ttf/punctuation.py
-	mv "$(CURDIR)/dist/ttf/PragmataPro-normalbolditalic.ttf" "$(CURDIR)/dist/ttf/PragmataPro-bolditalic.ttf"
-	mv "$(CURDIR)/dist/ttf/PragmataPro-normalboldupright.ttf" "$(CURDIR)/dist/ttf/PragmataPro-bold.ttf"
-	mv "$(CURDIR)/dist/ttf/PragmataPro-normalregularitalic.ttf" "$(CURDIR)/dist/ttf/PragmataPro-italic.ttf"
-	mv "$(CURDIR)/dist/ttf/PragmataPro-normalregularupright.ttf" "$(CURDIR)/dist/ttf/PragmataPro-regular.ttf"
+	mv "$(CURDIR)/dist/ttf/Iosevka-normalbolditalic.ttf" "$(CURDIR)/dist/ttf/Iosevka-bolditalic.ttf"
+	mv "$(CURDIR)/dist/ttf/Iosevka-normalboldupright.ttf" "$(CURDIR)/dist/ttf/Iosevka-bold.ttf"
+	mv "$(CURDIR)/dist/ttf/Iosevka-normalregularitalic.ttf" "$(CURDIR)/dist/ttf/Iosevka-italic.ttf"
+	mv "$(CURDIR)/dist/ttf/Iosevka-normalregularupright.ttf" "$(CURDIR)/dist/ttf/Iosevka-regular.ttf"
 
 nerd: ## Patch with Nerd Fonts glyphs
 	docker run --rm \
 		-v $(CURDIR)/dist/ttf:/in \
-		-v PragmataPro-volume:/out \
+		-v Iosevka-volume:/out \
 		nerdfonts/patcher --complete --careful --mono
 	docker container create \
-		-v PragmataPro-volume:/nerd \
-		--name PragmataPro-dummy \
+		-v Iosevka-volume:/nerd \
+		--name Iosevka-dummy \
 		alpine
-	docker cp PragmataPro-dummy:/nerd $(CURDIR)/dist
-	docker rm PragmataPro-dummy
-	docker volume rm PragmataPro-volume
-	mv "$(CURDIR)/dist/nerd/PragmataProNerdFontMono-Regular.ttf" "$(CURDIR)/dist/nerd/PragmataPro-nf-regular.ttf"
-	mv "$(CURDIR)/dist/nerd/PragmataProNerdFontMono-Italic.ttf" "$(CURDIR)/dist/nerd/PragmataPro-nf-italic.ttf"
-	mv "$(CURDIR)/dist/nerd/PragmataProNerdFontMono-Bold.ttf" "$(CURDIR)/dist/nerd/PragmataPro-nf-bold.ttf"
-	mv "$(CURDIR)/dist/nerd/PragmataProNerdFontMono-BoldItalic.ttf" "$(CURDIR)/dist/nerd/PragmataPro-nf-bolditalic.ttf"
+	docker cp Iosevka-dummy:/nerd $(CURDIR)/dist
+	docker rm Iosevka-dummy
+	docker volume rm Iosevka-volume
+	mv "$(CURDIR)/dist/nerd/IosevkaNerdFontMono-Regular.ttf" "$(CURDIR)/dist/nerd/Iosevka-nf-regular.ttf"
+	mv "$(CURDIR)/dist/nerd/IosevkaNerdFontMono-Italic.ttf" "$(CURDIR)/dist/nerd/Iosevka-nf-italic.ttf"
+	mv "$(CURDIR)/dist/nerd/IosevkaNerdFontMono-Bold.ttf" "$(CURDIR)/dist/nerd/Iosevka-nf-bold.ttf"
+	mv "$(CURDIR)/dist/nerd/IosevkaNerdFontMono-BoldItalic.ttf" "$(CURDIR)/dist/nerd/Iosevka-nf-bolditalic.ttf"
 
 package: ## Pack fonts to ready-to-distribute archives
-	zip -jr $(CURDIR)/dist/PragmataPro.zip $(CURDIR)/dist/ttf/*.ttf
-	zip -jr $(CURDIR)/dist/PragmataPro_NF.zip $(CURDIR)/dist/nerd/*.ttf
+	zip -jr $(CURDIR)/dist/Iosevka.zip $(CURDIR)/dist/ttf/*.ttf
+	zip -jr $(CURDIR)/dist/Iosevka_NF.zip $(CURDIR)/dist/nerd/*.ttf
 
 clean:
 	rm -rf $(CURDIR)/dist/*
