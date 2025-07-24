@@ -24,9 +24,9 @@ six = "open-contour"
 eight = "two-circles"
 nine = "open-contour"
 zero = "oval-slashed"
-f = "serifless-crossbar-at-x-height"
 g = "single-storey-serifless"
 lig-ltgteq = "slanted"
+f = "flat-hook-tailed-crossbar-at-x-height"
 
 [buildPlans.Iosevka.weights.Regular]
 shape = 400

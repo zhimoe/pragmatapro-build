@@ -14,7 +14,7 @@ scripter: ## Create the `fontforge` scripter Docker image
 
 font: ## Run all build steps in correct order
 	make --ignore-errors ttf
-	# make --ignore-errors nerd
+	make --ignore-errors nerd
 	# make --ignore-errors package
 
 ttf: ## Build ttf font from `Iosevka` custom configuration
